@@ -1,0 +1,14 @@
+{
+  "registry.terraform.io/hashicorp/external": {
+    "hash": "h1:VUkgcWvCliS0HO4kt7oEQhFD2gcx/59XpwMqxfCU1kE=",
+    "version": "2.2.2"
+  },
+  "registry.terraform.io/hashicorp/null": {
+    "hash": "h1:Pctug/s/2Hg5FJqjYcTM0kPyx3AoYK1MpRWO0T9V2ns=",
+    "version": "3.1.1"
+  },
+  "registry.terraform.io/ibm-cloud/ibm": {
+    "hash": "h1:Ib9CKky3Fqm0Ka2lnHObjbUkDiWdju0k4V/OixFcNKc=",
+    "version": "1.34.0"
+  }
+}
