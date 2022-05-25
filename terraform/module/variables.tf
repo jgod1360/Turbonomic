@@ -4,7 +4,11 @@ variable "ibmcloud_api_key" {
 }
 
 variable "resource_group" {
+<<<<<<< HEAD
   default     = "joel-rg-ibm"
+=======
+  default     = "Default"
+>>>>>>> 82fcc01659c5f86b7e88b9010fe10b318faff1d0
   description = "Resource group name where the cluster is hosted."
 }
 
