@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # use this yaml to deploy the kubeturbo pod 
+  # Provide a value for the deploy/pod name: and update namespace if needed
+  name: kubeturbo
+  namespace: turbo
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app.kubernetes.io/name: kubeturbo
+  spec:
+      global:
+        securityContext:
+          fsGroup: 1000670000
+  template:
+    metadata:
+      annotations:
+        kubeturbo.io/monitored: "false"
+      labels:
+        app.kubernetes.io/name: kubeturbo
+    spec:
+      # Update serviceAccount if needed
+      serviceAccountName: turbo-user
+      containers:
+      - name: kubeturbo
+        # Replace the image with desired version:6.4.4 or latest
+        image: turbonomic/kubeturbo:8.5.0
+        env:
+          - name: KUBETURBO_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        args:
+          - --turboconfig=/etc/kubeturbo/turbo.config
+          - --v=2
+          # Comment out the following two args if running in k8s 1.10 or older, or
+          # change to https=false and port=10255 if unsecure kubelet read only is configured
+          - --kubelet-https=true
+          - --kubelet-port=10250
+          # Uncomment for pod moves in OpenShift
+          #- --scc-support=*
+          # Uncomment for pod moves with pvs
+          #- --fail-volume-pod-moves=false
+          # Uncomment to override default, and specify your own location
+          #- --busybox-image=docker.io/busybox
+          # or uncomment below to pull from RHCC
+          #- --busybox-image=registry.access.redhat.com/ubi8/ubi-minimal
+          # Uncomment to specify the secret name which holds the credentials to busybox image
+          #- --busybox-image-pull-secret=<secret-name>
+          # Specify nodes to exclude from cpu frequency getter job.
+          # Note kubernetes.io/os=windows and/or beta.kubernetes.io/os=windows labels will be automatically excluded by default.
+          # If specified all the labels will be used to select the node ignoring the default.
+          #- --cpufreq-job-exclude-node-labels=kubernetes.io/key=value
+          # Uncomment to stitch using IP, or if using Openstack, Hyper-V/VMM
+          #- --stitch-uuid=false
+          # Uncomment to customize readiness retry threshold. Kubeturbo will try readiness-retry-threshold times before giving up. Default is 60. The retry interval is 10s.
+          #- --readiness-retry-threshold=60
+        volumeMounts:
+          # volume will be created, any name will work and must match below
+          - name: turbo-volume
+            mountPath: /etc/kubeturbo
+            readOnly: true
+          - name: turbonomic-credentials-volume
+            mountPath: /etc/turbonomic-credentials
+            readOnly: true
+          - name: varlog
+            mountPath: /var/log
+      volumes:
+      - name: turbo-volume
+        configMap:
+         # Update configMap name if needed
+          name: turbo-config
+      - name: turbonomic-credentials-volume
+        secret:
+          defaultMode: 420
+          optional: true
+          # Update secret name if needed
+          secretName: turbonomic-credentials
+      - name: varlog
+        emptyDir: {}
+      restartPolicy: Always
