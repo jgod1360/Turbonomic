@@ -76,35 +76,3 @@ echo
 
 sleep 15
 kubectl get pods -n "${TURBO_PROJECT}"
-
-
-
-#cat << EOF | oc -n ${NAMESPACE} apply -f -
-#apiVersion: operators.coreos.com/v1
-#kind: OperatorGroup
-#metadata:
-#  annotations:
-#    olm.providedAPIs: Xl.v1.charts.helm.k8s.io
-#  name: turbonomic-mkk5d
-#  namespace: ${NAMESPACE}
-#spec:
-#  targetNamespaces:
-#  - ${NAMESPACE}
-#EOF
-
-#
-#cat << EOF | oc -n ${NAMESPACE} apply -f -
-#apiVersion: operators.coreos.com/v1alpha1
-#kind: Subscription
-#metadata:
-#  labels:
-#    operators.coreos.com/t8c-certified.turbonomic: ""
-#  name: t8c-certified
-#  namespace: ${NAMESPACE}
-#spec:
-#  name: t8c-certified
-#  source: certified-operators
-#  sourceNamespace: openshift-marketplace
-#EOF
-
-#kubectl apply -f https://raw.githubusercontent.com/turbonomic/t8c-install/master/operator/deploy/crds/charts_v1alpha1_xl_cr.yaml -n ${NAMESPACE}
