@@ -37,6 +37,6 @@ module "install_turbonomic" {
   turbo_username      = var.turbo_username
   turbo_password      = var.turbo_password
   target_name         = var.target_name
-  regex              = var.regex
+  regex               = var.regex
   nginx_or_your_ingress = var.nginx_or_your_ingress
 }
