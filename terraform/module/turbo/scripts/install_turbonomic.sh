@@ -48,7 +48,7 @@ until oc get crd xls.charts.helm.k8s.io >> /dev/null 2>&1; do sleep 5; done
 echo
 
 echo "Creating Custom Resource Definition (xls.charts.helm.k8s.io) ..."
-kubectl create -f https://raw.githubusercontent.com/turbonomic/t8c-install/master/operator/deploy/crds/charts_v1alpha1_xl_crd.yaml
+kubectl create -f https://raw.githubusercontent.com/turbonomic/t8c-install/master/operator/deploy/crds/charts_v1alpha1_xl_crd.yaml -n "${TURBO_PROJECT}"
 echo
 
 echo "Configuring the NGINX or the Ingress/Route ..."
